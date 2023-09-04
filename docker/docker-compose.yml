@@ -1,0 +1,33 @@
+version: '3'
+services:
+  proxy:
+    image: nginx:latest
+    container_name: proxy
+    ports:
+      - "80:80"
+
+    volumes:
+      - ./proxy/nginx.conf:~/etc/nginx/nginx.conf # nginx 설정 파일 volume 맵핑
+      - ./proxy/conf.d:/etc/nginx/conf.d 
+    restart: "unless-stopped" # 내부에서 에러로 인해 container가 죽을 경우 restart
+
+  express1:
+    build:
+      context: ./docker_file # 빌드할 Dockerfile이 위치한 경로
+    container_name: express1
+    expose:
+      - "3001"
+    volumes:
+      - ./source/express1:/shopping-backend
+      - /shopping-backend/node_modules
+    restart: "unless-stopped"
+  express2:
+    build:
+      context: ./docker_file # 빌드할 Dockerfile이 위치한 경로
+    container_name: express2
+    expose:
+      - "3001"
+    volumes:
+      - ./source/express2:/shopping-backend
+      - /shopping-backend/node_modules
+    restart: "unless-stopped"
