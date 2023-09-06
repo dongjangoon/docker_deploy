@@ -21,6 +21,7 @@ services:
       - ./source/express1:/shopping-backend
       - /shopping-backend/node_modules
     restart: "unless-stopped"
+
   express2:
     build:
       context: ./docker_file # 빌드할 Dockerfile이 위치한 경로
