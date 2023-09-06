@@ -7,12 +7,12 @@ services:
       - "80:80"
 
     volumes:
-      - ./proxy/nginx/:../../etc/nginx
+      - ./proxy/nginx/:/etc/nginx
     restart: "unless-stopped" # 내부에서 에러로 인해 container가 죽을 경우 restart
 
   express1:
     build:
-      context: ./docker_file # 빌드할 Dockerfile이 위치한 경로
+      context: ./ # 빌드할 Dockerfile이 위치한 경로
     container_name: express1
     expose:
       - "3001"
@@ -23,7 +23,7 @@ services:
 
   express2:
     build:
-      context: ./docker_file # 빌드할 Dockerfile이 위치한 경로
+      context: ./ # 빌드할 Dockerfile이 위치한 경로
     container_name: express2
     expose:
       - "3001"
