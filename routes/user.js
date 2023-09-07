@@ -4,11 +4,6 @@ const router = express.Router();
 const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 
-router.get("/ping", (req, res) => {
-  res.send("Hello World!");
-  console.log(req.body);
-});
-
 // get all users
 router.get("/", async (req, res, next) => {
   try {
