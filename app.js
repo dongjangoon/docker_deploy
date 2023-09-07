@@ -17,8 +17,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/api/ping", (req, res) => {
+  res.send("pong");
   console.log(req.body);
 });
 
@@ -30,4 +30,4 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message: message });
 });
 
-app.listen(3001);
+app.listen(8081);
