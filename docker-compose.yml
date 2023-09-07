@@ -6,8 +6,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ~/etc/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ~/etc/letsencrypt:/etc/nginx/ssl
+      - ./Nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./letsencrypt:/etc/nginx/ssl
     depends_on:
       - backend
 
