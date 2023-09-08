@@ -2,14 +2,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 
 const app = express();
-const config = require("./config/key");
 
 const userRoutes = require("./routes/user");
 
+dotenv.config();
+
 mongoose
-  .connect(config.mongoURI)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected..."))
   .catch((err) => console.log(err));
 
@@ -24,10 +26,13 @@ app.get("/api/ping", (req, res) => {
 
 app.use("/api/users", userRoutes);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const status = err.statusCode || 500;
   const message = err.message || "Something went wrong.";
   res.status(status).json({ message: message });
 });
 
-app.listen(8081);
+// port
+app.listen(process.env.PORT, () => {
+  console.log(`Connecting to PORT ${process.env.PORT}...`);
+});
