@@ -1,10 +1,10 @@
-const express = require("express");
+import express, { Express, Request, Response } from 'express'
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 
-const app = express();
+const app: Express = express();
 
 const userRoutes = require("./routes/user");
 
@@ -13,7 +13,7 @@ dotenv.config();
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected..."))
-  .catch((err) => console.log(err));
+  .catch((err: Error) => console.log(err));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +26,12 @@ app.get("/api/ping", (req, res) => {
 
 app.use("/api/users", userRoutes);
 
-app.use((err, req, res) => {
+interface Error {
+  statusCode?: number
+  message?: string
+}
+
+app.use((err: Error, req: Request, res: Response) => {
   const status = err.statusCode || 500;
   const message = err.message || "Something went wrong.";
   res.status(status).json({ message: message });

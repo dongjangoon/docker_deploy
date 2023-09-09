@@ -17,14 +17,14 @@ router.get("/", async (req, res, next) => {
 // logout
 router.get("/logout", auth, (req, res) => {
   User.findOneAndUpdate({ email: req.user.email }, { token: "" })
-    .then((user) => {
+    .then(() => {
       return res.status(200).json({
         success: true,
         message: "logout success",
       });
     })
     .catch((err) => {
-      return es.json({ success: false, err });
+      return res.json({ success: false, err });
     });
 });
 
@@ -64,7 +64,7 @@ router.post("/", async (req, res, next) => {
 });
 
 // login
-router.post("/login", async (req, res, next) => {
+router.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
