@@ -19,7 +19,6 @@ jobs:
           username: ${{ secrets.DEV_USER }}
           host: ${{ secrets.DEV_HOST }}
           key: ${{ secrets.DEV_KEY }}
-          port: ${{ secrets.DEV_PORT }}
           script_stop: true
           script: |
             cd ./shopping-backend
