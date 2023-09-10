@@ -12,7 +12,7 @@ jobs:
       IMAGE_TAG: latest
       BUILD_NUMBER: ${{ github.run_number }}
       ECR_REGISTRY: 068222036345.dkr.ecr.ap-northeast-2.amazonaws.com
-      ECR_REPOSITORY: dailytopia2/shopping-backend
+      ECR_REPOSITORY: dailytopia2
 
     steps:
       - name: checkout
