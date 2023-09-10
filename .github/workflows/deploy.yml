@@ -21,6 +21,7 @@ jobs:
           username: ${{ secrets.DEV_USER }}
           host: ${{ secrets.DEV_HOST }}
           password: ${{ secrets.DEV_PASSWORD }}
+          port: ${{ secrets.DEV_PORT }}
           envs: COMPOSE
           script_stop: true
           script: |
