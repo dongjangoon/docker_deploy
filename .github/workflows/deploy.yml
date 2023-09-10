@@ -16,7 +16,7 @@ jobs:
       - name: EC2 Docker Run
         uses: appleboy/ssh-action@v1.0.0
         env:
-          COMPOSE: "./docker-compose.yml"
+          COMPOSE: "docker-compose.yml"
         with:
           username: ${{ secrets.DEV_USER }}
           host: ${{ secrets.DEV_HOST }}
@@ -25,6 +25,7 @@ jobs:
           envs: COMPOSE
           script_stop: true
           script: |
+            cd ./shopping-backend
             docker-compose -f $COMPOSE down --rmi all
             docker build -t backend .
             docker-compose -f $COMPOSE up -d
