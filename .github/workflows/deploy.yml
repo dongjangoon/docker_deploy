@@ -8,32 +8,26 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: latest
-      BUILD_NUMBER: ${{ github.run_number }}
-      ECR_REGISTRY: 068222036345.dkr.ecr.ap-northeast-2.amazonaws.com
-      ECR_REPOSITORY: dailytopia2
 
     steps:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+      - name: EC2 Docker Run
+        uses: appleboy/ssh-action@1.0.0
+        env:
+          COMPOSE: "./docker-compose.yml"
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build, tag, and push docker image to Amazon ECR
-        id: build-image
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          username: ec2-user
+          host: ${{ secrets.DEV_HOST }}
+          key: ${{ secrets.DEV_KEY }}
+          envs: COMPOSE
+          script_stop: true
+          script: |
+            docker-compose -f $COMPOSE down --rmi all
+            docker build -t backend .
+            docker-compose -f $COMPOSE up -d
+          
+        
 
       
