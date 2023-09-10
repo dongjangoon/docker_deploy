@@ -15,20 +15,17 @@ jobs:
 
       - name: EC2 Docker Run
         uses: appleboy/ssh-action@v1.0.0
-        env:
-          COMPOSE: "docker-compose.yml"
         with:
           username: ${{ secrets.DEV_USER }}
           host: ${{ secrets.DEV_HOST }}
-          password: ${{ secrets.DEV_PASSWORD }}
+          key: ${{ secrets.DEV_KEY }}
           port: ${{ secrets.DEV_PORT }}
-          envs: COMPOSE
           script_stop: true
           script: |
             cd ./shopping-backend
-            docker-compose -f $COMPOSE down --rmi all
+            docker-compose -f docker-compose.yml down --rmi all
             docker build -t backend .
-            docker-compose -f $COMPOSE up -d
+            docker-compose -f docker-compose.yml up -d
           
         
 
