@@ -93,6 +93,7 @@ done
 
 # nginx conf 변경 후 nginx reload
 sudo cp Nginx/nginx-${AFTER_COLOR}.conf Nginx/nginx.conf || exit 1
+nginx -s reload || exit 1
 
 # 기존 컨테이너 down
 docker-compose -p ${APP_NAME}-${BEFORE_COLOR} -f ${COMPOSE_FILE_NAME}.${BEFORE_COLOR}.yml down || exit 1
