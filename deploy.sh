@@ -1,6 +1,4 @@
-#!/bin/sh 
-
-git pull origin develop
+#!/bin/sh
 
 APP_NAME=backend # app 이름
 COMPOSE_FILE_NAME=docker-compose
