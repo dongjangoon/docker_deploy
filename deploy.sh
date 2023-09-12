@@ -17,7 +17,7 @@ TIME_OUT=60
 
 TEST_API=https://dailytopia2.shop/api/ping
 
-if [ "$IS_NGINX_RUN" ]; then
+if [ -z "$IS_NGINX_RUN" ]; then
   echo "nginx container up"
   docker-compose -f ${COMPOSE_FILE_NAME}.nginx.yml up -d || exit 1
 fi
