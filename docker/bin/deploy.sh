@@ -1,9 +1,10 @@
-#!/usr/bin/ bash
+#!/bin/sh 
 
 cd /home/ec2-user/shopping-backend/docker
 
+HOME_REPOSITORY=/home/ec2-user/shopping-backend/
 APP_NAME=backend # app 이름
-COMPOSE_FILE_NAME=docker_compose/docker-compose
+COMPOSE_FILE_NAME=docker-compose/docker-compose
 
 # blue 컨테이너가 띄워져 있는가
 IS_RUN_BLUE=$(docker-compose -p ${APP_NAME}-blue -f ${COMPOSE_FILE_NAME}.blue.yml ps | grep Up)
@@ -26,14 +27,14 @@ else
   PORT=8081
 fi
 
-ENV_REST=$(cat .env | tail -1)
+ENV_REST=$(cat ${HOME_REPOSITORY}.env | tail -1)
 
-echo "PORT=${PORT}" | tee .env
-echo "${ENV_REST}" >> .env
+echo "PORT=${PORT}" | tee ${HOME_REPOSITORY}.env
+echo "${ENV_REST}" >> ${HOME_REPOSITORY}.env
 
 # 새로운 컨테이너 띄우기
 echo "${AFTER_COLOR} container up"
-docker-copose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml up -d || exit 1
+docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml up -d || exit 1
 
 RUNNING_TIME=0
 while [1 == 1]
@@ -65,7 +66,7 @@ do
 done
 
 # nginx conf 변경 후 nginx reload
-cp Nginx/${APP_NAME}-${AFTER_COLOR}.conf Nginx/nginx.conf || exit 1
+sudo cp ${HOME_REPOSITORY}Nginx/nginx-${AFTER_COLOR}.conf ${HOME_REPOSITORY}Nginx/nginx.conf || exit 1
 nginx -s reload || exit 1
 
 # 기존 컨테이너 down
