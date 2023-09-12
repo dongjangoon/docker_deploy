@@ -17,11 +17,13 @@ TIME_OUT=60
 
 TEST_API=https://dailytopia2.shop/api/ping
 
+# nginx가 꺼져 있으면 동작
 if [ -z "$IS_NGINX_RUN" ]; then
   echo "nginx container up"
   docker-compose -f ${COMPOSE_FILE_NAME}.nginx.yml up -d || exit 1
 fi
 
+# color switch
 if [ -n "$IS_BLUE_RUN" ]; then
   BEFORE_COLOR="blue"
   AFTER_COLOR="green"
@@ -34,8 +36,8 @@ fi
 
 echo "> AFTER_COLOR: ${AFTER_COLOR}"
 
-ENV_REST=$(cat .env | tail -1)
-
+# .env port switch
+ENV_REST=$(tail -n+2 .env)
 echo "PORT=${PORT}" | tee .env
 echo "${ENV_REST}" >> .env
 
@@ -46,6 +48,7 @@ docker build -t ${APP_NAME} . | exit 1
 echo "${AFTER_COLOR} container up"
 docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml up -d || exit 1
 
+# 컨테이가 띄워졌는지 확인하는 반복문
 RUNNING_TIME=0
 while [1 == 1]
 do
