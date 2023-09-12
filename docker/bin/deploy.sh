@@ -1,8 +1,9 @@
 #!/bin/sh 
 
-cd /home/ec2-user/shopping-backend/docker
+HOME_REPOSITORY=/home/ec2-user/shopping-backend
 
-HOME_REPOSITORY=/home/ec2-user/shopping-backend/
+cd ${HOME_REPOSITORY}/docker
+
 APP_NAME=backend # app 이름
 COMPOSE_FILE_NAME=docker-compose/docker-compose
 
@@ -27,10 +28,10 @@ else
   PORT=8081
 fi
 
-ENV_REST=$(cat ${HOME_REPOSITORY}.env | tail -1)
+ENV_REST=$(cat ${HOME_REPOSITORY}/.env | tail -1)
 
-echo "PORT=${PORT}" | tee ${HOME_REPOSITORY}.env
-echo "${ENV_REST}" >> ${HOME_REPOSITORY}.env
+echo "PORT=${PORT}" | tee ${HOME_REPOSITORY}/.env
+echo "${ENV_REST}" >> ${HOME_REPOSITORY}/.env
 
 # 새로운 컨테이너 띄우기
 echo "${AFTER_COLOR} container up"
@@ -69,7 +70,7 @@ do
 done
 
 # nginx conf 변경 후 nginx reload
-sudo cp ${HOME_REPOSITORY}Nginx/nginx-${AFTER_COLOR}.conf ${HOME_REPOSITORY}Nginx/nginx.conf || exit 1
+sudo cp ${HOME_REPOSITORY}/Nginx/nginx-${AFTER_COLOR}.conf ${HOME_REPOSITORY}/Nginx/nginx.conf || exit 1
 nginx -s reload || exit 1
 
 # 기존 컨테이너 down
