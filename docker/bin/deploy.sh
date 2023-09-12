@@ -39,7 +39,7 @@ docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COL
 RUNNING_TIME=0
 while [1 == 1]
 do
-  START_TIME=`date +%s`
+  START_TIME=`date +%S`
   sleep 1
   # container 띄워졌는지 확인
   IS_UP_AFTER=$(docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml ps | grep Up)
@@ -53,7 +53,7 @@ do
     fi
   fi
 
-  END_TIME=`date +%s`
+  END_TIME=`date +%S`
   TIME_DIFF=`echo "$END_TIME - $START_TIME" | bc -l`
 
   RUNNING_TIME=$(($RUNNING_TIME + $TIME_DIFF))
