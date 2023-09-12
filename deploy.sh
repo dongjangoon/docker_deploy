@@ -9,6 +9,9 @@ IS_BLUE_RUN=$(docker ps | grep 8081 | grep blue)
 # nginx가 동작 중인가
 IS_NGINX_RUN=$(docker ps | grep 80 | grep 443)
 
+# redis
+IS_REDIS_RUN=$(docker ps | grep 16701 | grep redis)
+
 echo "> IS BLUE RUN: ${IS_BLUE_RUN}"
 echo "> IS NGINX RUN: ${IS_NGINX_RUN}"
 
@@ -21,6 +24,12 @@ TEST_API=https://dailytopia2.shop/api/ping
 if [ -z "$IS_NGINX_RUN" ]; then
   echo "nginx container up"
   docker-compose -f ${COMPOSE_FILE_NAME}.nginx.yml up -d || exit 1
+fi
+
+# redis가 꺼져 있으면 동작
+if [ -z "$IS_REDIS_RUN" ]; then
+  echo "redis container up"
+  docker-compose -f ${COMPOSE_FILE_NAME}.redis.yml up -d || exit 1
 fi
 
 # color switch

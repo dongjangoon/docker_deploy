@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  proxy:
+    image: redis:4.6.8
+    ports:
+      - "16701:16701"
