@@ -14,6 +14,7 @@ IS_REDIS_RUN=$(docker ps | grep 16701 | grep redis)
 
 echo "> IS BLUE RUN: ${IS_BLUE_RUN}"
 echo "> IS NGINX RUN: ${IS_NGINX_RUN}"
+echo "> IS REDIS RUN: ${IS_REDIS_RUN}"
 
 # timeout시 에러 
 TIME_OUT=60
@@ -51,7 +52,7 @@ echo "PORT=${PORT}" | tee .env
 echo "${ENV_REST}" >> .env
 
 # 도커 이미지 빌드
-docker build -t ${APP_NAME} . | exit 1
+docker build -t ${APP_NAME}-${AFTER_COLOR} . | exit 1
 
 # 새로운 컨테이너 띄우기
 echo "${AFTER_COLOR} container up"
