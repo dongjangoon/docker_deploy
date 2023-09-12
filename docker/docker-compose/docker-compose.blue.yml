@@ -1,7 +1,18 @@
 version: '3'
 
 services:
-  api:
+  proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./letsencrypt:/etc/letsencrypt
+    depends_on:
+      - backend
+
+  backend:
     image: backend:latest
     ports:
       - '8081:8081'
