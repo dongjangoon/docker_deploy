@@ -2,11 +2,12 @@
   "name": "shopping",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
-    "start": "node app.js"
+    "start dev": "nodemon app.js",
+    "start": "node app.js",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -18,10 +19,13 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "mongodb": "^5.7.0",
-    "mongoose": "^7.4.3",
-    "nodemon": "^3.0.1"
+    "mongoose": "^7.4.3"
   },
   "devDependencies": {
-    "eslint": "^8.47.0"
+    "eslint": "^8.47.0",
+    "nodemon": "^3.0.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
   }
 }
