@@ -4,16 +4,24 @@ APP_NAME=backend # app 이름
 COMPOSE_FILE_NAME=docker-compose
 
 # blue 컨테이너가 띄워져 있는가
-IS_RUN_BLUE=$(docker ps | grep 8081 | grep blue)
+IS_BLUE_RUN=$(docker ps | grep 8081 | grep blue)
 
-echo "> IS BLUE RUN: ${IS_RUN_BLUE}"
+# nginx가 동작 중인가
+IS_NGINX_RUN=$(docker ps | grep 80 | grep 443)
+
+echo "> IS BLUE RUN: ${IS_BLUE_RUN}"
+echo "> IS NGINX RUN: ${IS_NGINX_RUN}"
 
 # timeout시 에러 
 TIME_OUT=60
 
 TEST_API=https://dailytopia2.shop/api/ping
 
-if [ -n "$IS_RUN_BLUE" ]; then
+if [ "$IS_NGINX_RUN" ]; then
+  echo "nginx container up"
+  docker-compose -f ${COMPOSE_FILE_NAME}.nginx.yml up -d || exit 1
+
+if [ -n "$IS_BLUE_RUN" ]; then
   BEFORE_COLOR="blue"
   AFTER_COLOR="green"
   PORT=8082
