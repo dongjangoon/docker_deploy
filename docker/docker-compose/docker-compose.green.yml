@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  api:
+    image: backend:latest
+    ports:
+      - '8082:8082'
