@@ -15,7 +15,7 @@ TIME_OUT=60
 TEST_API=https://dailytopia2.shop/api/ping
 
 # 도커 이미지 빌드
-docker build -t ${APP_NAME}:latest . | exit 1
+docker build -t ${APP_NAME} . | exit 1
 
 if [ -n "$IS_RUN_BLUE" ]; then
   BEFORE_COLOR="blue"
