@@ -14,5 +14,7 @@ services:
 
   backend:
     image: backend:latest
+    container_name: backend-blue
     ports:
-      - '8081:8081'
+      - '8081:80'
+      - '8081:443'

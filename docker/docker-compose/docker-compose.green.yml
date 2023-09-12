@@ -14,5 +14,7 @@ services:
 
   backend:
     image: backend:latest
+    container_name: backend-green
     ports:
-      - '8082:8082'
+      - '8082:80'
+      - '8082:443'
