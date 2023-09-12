@@ -40,6 +40,7 @@ RUNNING_TIME=0
 while [1 == 1]
 do
   START_TIME=`date +%S`
+  echo "${START_TIME}"
   sleep 1
   # container 띄워졌는지 확인
   IS_UP_AFTER=$(docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml ps | grep Up)
@@ -54,9 +55,11 @@ do
   fi
 
   END_TIME=`date +%S`
-  TIME_DIFF=`echo "$END_TIME - $START_TIME" | bc -l`
+  echo "> END TIME: ${END_TIME}"
 
+  TIME_DIFF=`echo "$END_TIME - $START_TIME" | bc -l`
   RUNNING_TIME=$(($RUNNING_TIME + $TIME_DIFF))
+  echo "> RUNNING_TIME: ${RUNNING_TIME}"
 
   # timeout시 에러 발생
   if [ $RUNNING_TIME -gt $TIME_OUT ]; then
