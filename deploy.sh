@@ -6,6 +6,8 @@ COMPOSE_FILE_NAME=docker-compose
 # blue 컨테이너가 띄워져 있는가
 IS_RUN_BLUE=$(docker-compose -p ${APP_NAME}-blue -f ${COMPOSE_FILE_NAME}.blue.yml ps | grep Up)
 
+echo "> IS BLUE RUN: ${IS_RUN_BLUE}"
+
 # timeout시 에러 
 TIME_OUT=60
 
@@ -20,6 +22,8 @@ else
   AFTER_COLOR="blue"
   PORT=8081
 fi
+
+echo "> AFTER_COLOR: ${AFTER_COLOR}"
 
 ENV_REST=$(cat .env | tail -1)
 
