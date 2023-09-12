@@ -21,5 +21,5 @@ jobs:
           key: ${{ secrets.DEV_KEY }}
           port: ${{ secrets.DEV_PORT }}
           script: |
-            ./shopping-backend/docker/bin/deploy.sh
+            ./shopping-backend/deploy.sh
           
