@@ -3,11 +3,10 @@
 git pull origin devleop
 
 HOME_REPOSITORY=/home/ec2-user/shopping-backend
-
-cd ${HOME_REPOSITORY}/docker
+cd HOME_REPOSITORY
 
 APP_NAME=backend # app 이름
-COMPOSE_FILE_NAME=docker-compose/docker-compose
+COMPOSE_FILE_NAME=docker-compose
 
 # blue 컨테이너가 띄워져 있는가
 IS_RUN_BLUE=$(docker-compose -p ${APP_NAME}-blue -f ${COMPOSE_FILE_NAME}.blue.yml ps | grep Up)
@@ -16,9 +15,6 @@ IS_RUN_BLUE=$(docker-compose -p ${APP_NAME}-blue -f ${COMPOSE_FILE_NAME}.blue.ym
 TIME_OUT=60
 
 TEST_API=https://dailytopia2.shop/api/ping
-
-# 도커 이미지 빌드
-docker build -t ${APP_NAME} . | exit 1
 
 if [ -n "$IS_RUN_BLUE" ]; then
   BEFORE_COLOR="blue"
@@ -34,6 +30,9 @@ ENV_REST=$(cat ${HOME_REPOSITORY}/.env | tail -1)
 
 echo "PORT=${PORT}" | tee ${HOME_REPOSITORY}/.env
 echo "${ENV_REST}" >> ${HOME_REPOSITORY}/.env
+
+# 도커 이미지 빌드
+docker build -t ${APP_NAME} . | exit 1
 
 # 새로운 컨테이너 띄우기
 echo "${AFTER_COLOR} container up"
