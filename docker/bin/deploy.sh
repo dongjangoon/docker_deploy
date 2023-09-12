@@ -1,5 +1,7 @@
 #!/bin/sh 
 
+git pull origin devleop
+
 HOME_REPOSITORY=/home/ec2-user/shopping-backend
 
 cd ${HOME_REPOSITORY}/docker
