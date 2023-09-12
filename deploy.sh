@@ -6,26 +6,16 @@ COMPOSE_FILE_NAME=docker-compose
 # blue 컨테이너가 띄워져 있는가
 IS_BLUE_RUN=$(docker ps | grep 8081 | grep blue)
 
-# nginx가 동작 중인가
-IS_NGINX_RUN=$(docker ps | grep 80 | grep 443)
-
 # redis
 IS_REDIS_RUN=$(docker ps | grep 16701 | grep redis)
 
 echo "> IS BLUE RUN: ${IS_BLUE_RUN}"
-echo "> IS NGINX RUN: ${IS_NGINX_RUN}"
 echo "> IS REDIS RUN: ${IS_REDIS_RUN}"
 
 # timeout시 에러 
 TIME_OUT=60
 
 TEST_API=https://dailytopia2.shop/api/ping
-
-# nginx가 꺼져 있으면 동작
-if [ -z "$IS_NGINX_RUN" ]; then
-  echo "nginx container up"
-  docker-compose -f ${COMPOSE_FILE_NAME}.nginx.yml up -d || exit 1
-fi
 
 # redis가 꺼져 있으면 동작
 if [ -z "$IS_REDIS_RUN" ]; then
@@ -92,7 +82,7 @@ do
 done
 
 # nginx conf 변경 후 nginx reload
-sudo cp Nginx/nginx-${AFTER_COLOR}.conf Nginx/nginx.conf || exit 1
+sudo cp Nginx/nginx-${AFTER_COLOR}.conf /etc/nginx/nginx.conf || exit 1
 nginx -s reload || exit 1
 
 # 기존 컨테이너 down
