@@ -2,9 +2,6 @@
 
 git pull origin devleop
 
-HOME_REPOSITORY=/home/ec2-user/shopping-backend
-cd HOME_REPOSITORY
-
 APP_NAME=backend # app 이름
 COMPOSE_FILE_NAME=docker-compose
 
@@ -26,10 +23,10 @@ else
   PORT=8081
 fi
 
-ENV_REST=$(cat ${HOME_REPOSITORY}/.env | tail -1)
+ENV_REST=$(cat .env | tail -1)
 
-echo "PORT=${PORT}" | tee ${HOME_REPOSITORY}/.env
-echo "${ENV_REST}" >> ${HOME_REPOSITORY}/.env
+echo "PORT=${PORT}" | tee .env
+echo "${ENV_REST}" >> .env
 
 # 도커 이미지 빌드
 docker build -t ${APP_NAME} . | exit 1
@@ -71,7 +68,7 @@ do
 done
 
 # nginx conf 변경 후 nginx reload
-sudo cp ${HOME_REPOSITORY}/Nginx/nginx-${AFTER_COLOR}.conf ${HOME_REPOSITORY}/Nginx/nginx.conf || exit 1
+sudo cp Nginx/nginx-${AFTER_COLOR}.conf Nginx/nginx.conf || exit 1
 nginx -s reload || exit 1
 
 # 기존 컨테이너 down
