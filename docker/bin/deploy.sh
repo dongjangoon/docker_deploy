@@ -8,7 +8,7 @@ APP_NAME=backend # app 이름
 COMPOSE_FILE_NAME=docker-compose/docker-compose
 
 # blue 컨테이너가 띄워져 있는가
-IS_RUN_BLUE=$(docker-compose -f ${COMPOSE_FILE_NAME}.blue.yml ps | grep Up)
+IS_RUN_BLUE=$(docker-compose -p ${APP_NAME}-blue -f ${COMPOSE_FILE_NAME}.blue.yml ps | grep Up)
 
 # timeout시 에러 
 TIME_OUT=60
@@ -35,7 +35,7 @@ echo "${ENV_REST}" >> ${HOME_REPOSITORY}/.env
 
 # 새로운 컨테이너 띄우기
 echo "${AFTER_COLOR} container up"
-docker-compose -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml up -d || exit 1
+docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml up -d || exit 1
 
 RUNNING_TIME=0
 while [1 == 1]
@@ -44,7 +44,7 @@ do
   echo "${START_TIME}"
   sleep 1
   # container 띄워졌는지 확인
-  IS_UP_AFTER=$(docker-compose -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml ps | grep Up)
+  IS_UP_AFTER=$(docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml ps | grep Up)
 
   if [ -n "$IS_UP_AFTER" ]; then
     # WAS 띄워졌는지 확인
@@ -74,5 +74,5 @@ sudo cp ${HOME_REPOSITORY}/Nginx/nginx-${AFTER_COLOR}.conf ${HOME_REPOSITORY}/Ng
 nginx -s reload || exit 1
 
 # 기존 컨테이너 down
-docker-compose -f ${COMPOSE_FILE_NAME}.${BEFORE_COLOR}.yml down || exit 1
+docker-compose -p ${APP_NAME}-${BEFORE_COLOR} -f ${COMPOSE_FILE_NAME}.${BEFORE_COLOR}.yml down || exit 1
 echo "${BEFORE_COLOR} container down"
