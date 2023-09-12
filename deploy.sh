@@ -4,7 +4,7 @@ APP_NAME=backend # app 이름
 COMPOSE_FILE_NAME=docker-compose
 
 # blue 컨테이너가 띄워져 있는가
-IS_RUN_BLUE=$(docker ps | grep 8081)
+IS_RUN_BLUE=$(docker ps | grep 8081 | grep blue)
 
 echo "> IS BLUE RUN: ${IS_RUN_BLUE}"
 
