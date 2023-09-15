@@ -7,7 +7,7 @@ COMPOSE_FILE_NAME=docker-compose
 IS_BLUE_RUN=$(docker ps | grep 8081 | grep blue)
 
 # redis
-IS_REDIS_RUN=$(docker ps | grep 16701 | grep redis)
+IS_REDIS_RUN=$(docker ps | grep redis)
 
 echo "> IS BLUE RUN: ${IS_BLUE_RUN}"
 echo "> IS REDIS RUN: ${IS_REDIS_RUN}"
@@ -42,7 +42,7 @@ echo "PORT=${PORT}" | tee .env
 echo "${ENV_REST}" >> .env
 
 # 도커 이미지 빌드
-docker build -t ${APP_NAME}-${AFTER_COLOR} . | exit 1
+docker build -t ${APP_NAME} . || exit 1
 
 # 새로운 컨테이너 띄우기
 echo "${AFTER_COLOR} container up"
@@ -82,9 +82,9 @@ do
 done
 
 # nginx conf 변경 후 nginx reload
-sudo cp Nginx/nginx-${AFTER_COLOR}.conf /etc/nginx/nginx.conf || exit 1
-nginx -s reload || exit 1
+#sudo cp Nginx/nginx-${AFTER_COLOR}.conf /etc/nginx/nginx.conf || exit 1
 
 # 기존 컨테이너 down
-docker-compose -p ${APP_NAME}-${BEFORE_COLOR} -f ${COMPOSE_FILE_NAME}.${BEFORE_COLOR}.yml down || exit 1
+docker stop ${APP_NAME}-${BEFORE_COLOR}
+docker rm ${APP_NAME}-${BEFORE_COLOR}
 echo "${BEFORE_COLOR} container down"
