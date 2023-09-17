@@ -4,13 +4,13 @@ APP_NAME=backend # app 이름
 COMPOSE_FILE_NAME=docker-compose
 
 # blue 컨테이너가 띄워져 있는가
-IS_BLUE_RUN=$(docker ps | grep 8081 | grep blue)
+IS_BLUE_RUN=$(docker ps | grep backend-blue)
 
 # redis
-IS_REDIS_RUN=$(docker ps | grep redis)
+IS_REDIS_RUN=$(docker ps | grep some-redis)
 
 # rabbit
-IS_RABBIT_RUN=$(docker ps | grep rabbit)
+IS_RABBIT_RUN=$(docker ps | grep some-rabbit)
 
 echo "> IS BLUE RUN: ${IS_BLUE_RUN}"
 echo "> IS REDIS RUN: ${IS_REDIS_RUN}"
@@ -24,13 +24,13 @@ TEST_API=https://dailytopia2.shop/api/ping
 # redis가 꺼져 있으면 동작
 if [ -z "$IS_REDIS_RUN" ]; then
   echo "redis container up"
-  docker-compose -f ${COMPOSE_FILE_NAME}.redis.yml up -d || exit 1
+	docker run -d --hostname my-redis --name some-redis -p 16701:16701 redis:latest || exit 1 
 fi
 
 # rabbit이 꺼져 있으면 동작
 if [ -z "$IS_RABBIT_RUN" ]; then
   echo "rabbit container up"
-  docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+  docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management || exit 1
 fi
 
 # color switch
