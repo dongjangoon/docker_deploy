@@ -9,8 +9,12 @@ IS_BLUE_RUN=$(docker ps | grep 8081 | grep blue)
 # redis
 IS_REDIS_RUN=$(docker ps | grep redis)
 
+# rabbit
+IS_RABBIT_RUN=$(docker ps | grep rabbit)
+
 echo "> IS BLUE RUN: ${IS_BLUE_RUN}"
 echo "> IS REDIS RUN: ${IS_REDIS_RUN}"
+echo "> IS RABBIT RUN: ${IS_RABBIT_RUN}"
 
 # timeout시 에러 
 TIME_OUT=60
@@ -21,6 +25,12 @@ TEST_API=https://dailytopia2.shop/api/ping
 if [ -z "$IS_REDIS_RUN" ]; then
   echo "redis container up"
   docker-compose -f ${COMPOSE_FILE_NAME}.redis.yml up -d || exit 1
+fi
+
+# rabbit이 꺼져 있으면 동작
+if [ -z "$IS_RABBIT_RUN" ]; then
+  echo "rabbit container up"
+  docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 fi
 
 # color switch
@@ -56,7 +66,7 @@ do
   echo "${START_TIME}"
   sleep 1
   # container 띄워졌는지 확인
-  IS_UP_AFTER=$(docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml ps | grep Up)
+  IS_UP_AFTER=$(docker ps -f "name=${APP_NAME}-${AFTER_COLOR}")
 
   if [ -n "$IS_UP_AFTER" ]; then
     # WAS 띄워졌는지 확인
@@ -80,9 +90,6 @@ do
     exit 1
   fi
 done
-
-# nginx conf 변경 후 nginx reload
-#sudo cp Nginx/nginx-${AFTER_COLOR}.conf /etc/nginx/nginx.conf || exit 1
 
 # 기존 컨테이너 down
 docker stop ${APP_NAME}-${BEFORE_COLOR}

@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  proxy:
+  redis:
     image: redis:latest
     ports:
-      - "16701:16701"
+      - "16701:16701""
