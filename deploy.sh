@@ -56,7 +56,7 @@ docker build -t ${APP_NAME} . || exit 1
 
 # 새로운 컨테이너 띄우기
 echo "${AFTER_COLOR} container up"
-docker-compose -p ${APP_NAME}-${AFTER_COLOR} -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml up -d || exit 1
+docker-compose -f ${COMPOSE_FILE_NAME}.${AFTER_COLOR}.yml up -d || exit 1
 
 # 컨테이가 띄워졌는지 확인하는 반복문
 RUNNING_TIME=0
@@ -92,6 +92,6 @@ do
 done
 
 # 기존 컨테이너 down
-docker stop ${APP_NAME}-${BEFORE_COLOR}
-docker rm ${APP_NAME}-${BEFORE_COLOR}
+docker stop ${APP_NAME}-${BEFORE_COLOR} || exit 1
+docker rm ${APP_NAME}-${BEFORE_COLOR} || exit 1
 echo "${BEFORE_COLOR} container down"
