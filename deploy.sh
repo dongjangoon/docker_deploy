@@ -91,7 +91,13 @@ do
   fi
 done
 
+IS_BEFORE_RUN=$(docker ps | grep ${APP_NAME}-${BEFORE_COLOR})
+
 # 기존 컨테이너 down
-docker stop ${APP_NAME}-${BEFORE_COLOR} || exit 1
-docker rm ${APP_NAME}-${BEFORE_COLOR} || exit 1
-echo "${BEFORE_COLOR} container down"
+if [ -n "$IS_BEFORE_RUN" ]; then
+  docker stop ${APP_NAME}-${BEFORE_COLOR} || exit 1
+  docker rm ${APP_NAME}-${BEFORE_COLOR} || exit 1
+  echo "${BEFORE_COLOR} container down"
+fi
+
+echo "Deployment Complete"
